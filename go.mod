@@ -1,4 +1,4 @@
-module github.com/rinonkia/sqs-repository-pattarn
+module github.com/rinonkia/cqs-repository-pattarn
 
 go 1.21.0
 

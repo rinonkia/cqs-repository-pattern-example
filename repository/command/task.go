@@ -3,7 +3,7 @@ package command
 import (
 	"context"
 
-	"github.com/rinonkia/sqs-repository-pattarn/model"
+	"github.com/rinonkia/cqs-repository-pattarn/model"
 )
 
 type (

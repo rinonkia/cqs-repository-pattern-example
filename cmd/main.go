@@ -4,10 +4,10 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rinonkia/sqs-repository-pattarn/handler"
-	"github.com/rinonkia/sqs-repository-pattarn/repository/command"
-	"github.com/rinonkia/sqs-repository-pattarn/repository/query"
-	"github.com/rinonkia/sqs-repository-pattarn/usecase"
+	"github.com/rinonkia/cqs-repository-pattarn/handler"
+	"github.com/rinonkia/cqs-repository-pattarn/repository/command"
+	"github.com/rinonkia/cqs-repository-pattarn/repository/query"
+	"github.com/rinonkia/cqs-repository-pattarn/usecase"
 )
 
 func main() {

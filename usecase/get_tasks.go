@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 
-	"github.com/rinonkia/sqs-repository-pattarn/model"
-	"github.com/rinonkia/sqs-repository-pattarn/repository"
+	"github.com/rinonkia/cqs-repository-pattarn/model"
+	"github.com/rinonkia/cqs-repository-pattarn/repository"
 )
 
 type (

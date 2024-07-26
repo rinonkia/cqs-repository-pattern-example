@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rinonkia/sqs-repository-pattarn/usecase"
+	"github.com/rinonkia/cqs-repository-pattarn/usecase"
 )
 
 func NewGetTasks(uc *usecase.GetTasksUsecase) gin.HandlerFunc {
