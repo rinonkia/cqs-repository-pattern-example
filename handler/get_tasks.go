@@ -10,17 +10,8 @@ import (
 
 func NewGetTasks(uc *usecase.GetTasksUsecase) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		input := struct {
-			Status string `json:"status"`
-		}{}
-
-		if err := ctx.ShouldBindJSON(&input); err != nil {
-			log.Println(err)
-			return
-		}
-
 		result := uc.Exec(ctx, &usecase.GetTasksUsecaseDTO{
-			Status: input.Status,
+			Status: ctx.Param("status"),
 		})
 		if result.Err != nil {
 			log.Println(result.Err)
