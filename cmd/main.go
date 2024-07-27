@@ -1,16 +1,25 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rinonkia/cqs-repository-pattarn/handler"
 	"github.com/rinonkia/cqs-repository-pattarn/repository/command"
 	"github.com/rinonkia/cqs-repository-pattarn/repository/query"
+	"github.com/rinonkia/cqs-repository-pattarn/repository/record"
 	"github.com/rinonkia/cqs-repository-pattarn/usecase"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func main() {
+	_, err := dbSetup()
+	if err != nil {
+		log.Fatal(fmt.Errorf("db setup error. %w", err))
+	}
+
 	r := gin.New()
 
 	// repository
@@ -43,4 +52,26 @@ func main() {
 	r.GET("/tasks", getTasksHandler)
 
 	log.Fatal(r.Run(":8080"))
+}
+
+func dbSetup() (*gorm.DB, error) {
+	var (
+		host   = "0.0.0.0"
+		port   = "3306"
+		user   = "crp"
+		pw     = "crp"
+		dbName = "crp"
+	)
+
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", user, pw, host, port, dbName)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+
+	if err := db.AutoMigrate(&record.Task{}); err != nil {
+		return nil, err
+	}
+
+	return db, nil
 }

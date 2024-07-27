@@ -31,7 +31,7 @@ func NewAddTaskUsecase(putTaskCommand repository.Command[*model.Task]) *AddTaskU
 func (uc *AddTaskUsecase) Execute(ctx context.Context, dto *AddTaskUsecaseDTO) *AddTaskUsecaseResult {
 	err := uc.putTaskCommand.Exec(ctx, &model.Task{
 		Name:   dto.Name,
-		Status: model.NotStarted,
+		Status: model.StatusNotStarted,
 	})
 	if err != nil {
 		return &AddTaskUsecaseResult{Err: err}
