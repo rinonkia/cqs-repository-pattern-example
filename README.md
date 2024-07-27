@@ -1,0 +1,1 @@
+# cqs-repository-pattern example
