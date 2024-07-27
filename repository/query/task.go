@@ -12,7 +12,7 @@ type (
 	getTaskByIDQuery      struct{ db *gorm.DB }
 	getTasksByStatusQuery struct{ db *gorm.DB }
 
-	getAllTasksQuery struct{ db *gorm.DB }
+	getAllTasksQuery struct{ db *gorm.DB } // implement QueryWithoutParam
 )
 
 func NewGetTaskByIDQuery(db *gorm.DB) *getTaskByIDQuery {

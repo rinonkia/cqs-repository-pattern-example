@@ -17,6 +17,7 @@ func NewPutTaskCommand(db *gorm.DB) *putTaskCommand {
 	return &putTaskCommand{db: db}
 }
 
+// Exec This is equivalent to upsert.
 func (c *putTaskCommand) Exec(ctx context.Context, task *model.Task) error {
 	rec, err := record.FromTask(task)
 	if err != nil {
