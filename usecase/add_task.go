@@ -13,8 +13,8 @@ type (
 	}
 
 	AddTaskUsecaseDTO struct {
-		Name   string
-		Status string
+		Name     string
+		Priority string
 	}
 
 	AddTaskUsecaseResult struct {
@@ -29,9 +29,15 @@ func NewAddTaskUsecase(putTaskCommand repository.Command[*model.Task]) *AddTaskU
 }
 
 func (uc *AddTaskUsecase) Execute(ctx context.Context, dto *AddTaskUsecaseDTO) *AddTaskUsecaseResult {
-	err := uc.putTaskCommand.Exec(ctx, &model.Task{
-		Name:   dto.Name,
-		Status: model.StatusNotStarted,
+	p, err := model.PriorityFromString(dto.Priority)
+	if err != nil {
+		return &AddTaskUsecaseResult{Err: err}
+	}
+
+	err = uc.putTaskCommand.Exec(ctx, &model.Task{
+		Name:     dto.Name,
+		Priority: p,
+		Status:   model.StatusNotStarted,
 	})
 	if err != nil {
 		return &AddTaskUsecaseResult{Err: err}

@@ -18,8 +18,9 @@ func NewUpdateTask(uc *usecase.UpdateTaskUsecase) gin.HandlerFunc {
 		}
 
 		input := struct {
-			Name   string `json:"name"`
-			Status string `json:"status"`
+			Name     string `json:"name"`
+			Priority string `json:"priority"`
+			Status   string `json:"status"`
 		}{}
 
 		if err := ctx.ShouldBindJSON(&input); err != nil {
@@ -28,9 +29,10 @@ func NewUpdateTask(uc *usecase.UpdateTaskUsecase) gin.HandlerFunc {
 		}
 
 		result := uc.Exec(ctx, &usecase.UpdateTaskUsecaseDTO{
-			ID:     id,
-			Name:   input.Name,
-			Status: input.Status,
+			ID:       id,
+			Name:     input.Name,
+			Priority: input.Priority,
+			Status:   input.Status,
 		})
 		if result.Err != nil {
 			log.Println(result.Err)

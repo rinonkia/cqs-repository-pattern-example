@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	_, err := dbSetup()
+	db, err := dbSetup()
 	if err != nil {
 		log.Fatal(fmt.Errorf("db setup error. %w", err))
 	}
@@ -23,17 +23,17 @@ func main() {
 	r := gin.New()
 
 	// repository
-	getTaskByIDQuery := query.NewGetTaskByIDQuery()
-	getAllTaskQuery := query.NewGetAllTasksQuery()
-	getTasksByStatusQuery := query.NewGetTasksByStatusQuery()
-	putTaskCommand := command.NewPutTaskCommand()
-	deleteTaskCommand := command.NewDeleteTaskCommand()
+	getTaskByIDQuery := query.NewGetTaskByIDQuery(db)
+	getAllTaskQuery := query.NewGetAllTasksQuery(db)
+	getTasksByStatusQuery := query.NewGetTasksByStatusQuery(db)
+	putTaskCommand := command.NewPutTaskCommand(db)
+	deleteTaskCommand := command.NewDeleteTaskCommand(db)
 
 	// usecase
 	getTaskUsecase := usecase.NewGetTaskUsecase(getTaskByIDQuery)
 	addTaskUsecase := usecase.NewAddTaskUsecase(putTaskCommand)
 	updateTaskUsecase := usecase.NewUpdateTaskUsecase(getTaskByIDQuery, putTaskCommand)
-	deleteTaskUsecase := usecase.NewDeleteTaskUsecase(deleteTaskCommand)
+	deleteTaskUsecase := usecase.NewDeleteTaskUsecase(getTaskByIDQuery, deleteTaskCommand)
 	getTasksUsecase := usecase.NewGetTasksUsecase(getAllTaskQuery, getTasksByStatusQuery)
 
 	// handler
@@ -47,7 +47,7 @@ func main() {
 	r.GET("/health", healthCheck)
 	r.GET("/task/:id", getTaskHandler)
 	r.POST("/task", addTaskHandler)
-	r.PATCH("/task", updateTaskHandler)
+	r.PATCH("/task/:id", updateTaskHandler)
 	r.DELETE("/task/:id", deleteTaskHandler)
 	r.GET("/tasks", getTasksHandler)
 

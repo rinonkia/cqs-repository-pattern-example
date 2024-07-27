@@ -14,9 +14,10 @@ type (
 	}
 
 	UpdateTaskUsecaseDTO struct {
-		ID     int
-		Name   string
-		Status string
+		ID       int
+		Name     string
+		Priority string
+		Status   string
 	}
 
 	UpdateTaskUsecaseResult struct {
@@ -45,10 +46,16 @@ func (uc *UpdateTaskUsecase) Exec(ctx context.Context, dto *UpdateTaskUsecaseDTO
 		return &UpdateTaskUsecaseResult{Err: err}
 	}
 
+	priority, err := model.PriorityFromString(dto.Priority)
+	if err != nil {
+		return &UpdateTaskUsecaseResult{Err: err}
+	}
+
 	newTask := model.Task{
-		ID:     task.ID,
-		Name:   dto.Name,
-		Status: status,
+		ID:       task.ID,
+		Name:     dto.Name,
+		Priority: priority,
+		Status:   status,
 	}
 
 	err = uc.putTaskCommand.Exec(ctx, &newTask)

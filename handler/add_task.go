@@ -11,7 +11,8 @@ import (
 func NewAddTask(uc *usecase.AddTaskUsecase) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		input := struct {
-			Name string `json:"name"`
+			Name     string `json:"name"`
+			Priority string `json:"priority"`
 		}{}
 
 		if err := ctx.ShouldBindJSON(&input); err != nil {
@@ -20,7 +21,8 @@ func NewAddTask(uc *usecase.AddTaskUsecase) gin.HandlerFunc {
 		}
 
 		err := uc.Execute(ctx, &usecase.AddTaskUsecaseDTO{
-			Name: input.Name,
+			Name:     input.Name,
+			Priority: input.Priority,
 		})
 		if err != nil {
 			log.Println(err)

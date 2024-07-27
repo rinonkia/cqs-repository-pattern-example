@@ -46,7 +46,6 @@ func (uc *GetTasksUsecase) Exec(ctx context.Context, dto *GetTasksUsecaseDTO) *G
 		status, err := model.StatusFromString(dto.Status)
 		if err != nil {
 			return &GetTasksUsecaseResult{Err: err}
-
 		}
 
 		tasks, err := uc.getTasksByStatusQuery.Exec(ctx, status)

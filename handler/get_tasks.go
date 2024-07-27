@@ -11,7 +11,7 @@ import (
 func NewGetTasks(uc *usecase.GetTasksUsecase) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		result := uc.Exec(ctx, &usecase.GetTasksUsecaseDTO{
-			Status: ctx.Param("status"),
+			Status: ctx.Query("status"),
 		})
 		if result.Err != nil {
 			log.Println(result.Err)

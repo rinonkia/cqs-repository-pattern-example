@@ -11,7 +11,7 @@ type Task struct {
 	Status   string
 }
 
-func RecordFromTask(task *model.Task) (*Task, error) {
+func FromTask(task *model.Task) (*Task, error) {
 	return &Task{
 		ID:       uint(task.ID),
 		Name:     task.Name,
@@ -37,4 +37,17 @@ func TaskFromRecord(rec *Task) (*model.Task, error) {
 		Priority: priority,
 		Status:   status,
 	}, nil
+}
+
+func TasksFromRecords(recs []*Task) ([]*model.Task, error) {
+	tasks := make([]*model.Task, len(recs))
+
+	for i, rec := range recs {
+		task, err := TaskFromRecord(rec)
+		if err != nil {
+			return nil, err
+		}
+		tasks[i] = task
+	}
+	return tasks, nil
 }
