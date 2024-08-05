@@ -28,7 +28,7 @@ func NewAddTaskUsecase(putTaskCommand repository.Command[*model.Task]) *AddTaskU
 	}
 }
 
-func (uc *AddTaskUsecase) Execute(ctx context.Context, dto *AddTaskUsecaseDTO) *AddTaskUsecaseResult {
+func (uc *AddTaskUsecase) Exec(ctx context.Context, dto *AddTaskUsecaseDTO) *AddTaskUsecaseResult {
 	p, err := model.PriorityFromString(dto.Priority)
 	if err != nil {
 		return &AddTaskUsecaseResult{Err: err}

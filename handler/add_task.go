@@ -20,7 +20,7 @@ func NewAddTask(uc *usecase.AddTaskUsecase) gin.HandlerFunc {
 			return
 		}
 
-		err := uc.Execute(ctx, &usecase.AddTaskUsecaseDTO{
+		err := uc.Exec(ctx, &usecase.AddTaskUsecaseDTO{
 			Name:     input.Name,
 			Priority: input.Priority,
 		})
