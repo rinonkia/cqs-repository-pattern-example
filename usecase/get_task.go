@@ -9,7 +9,7 @@ import (
 
 type (
 	GetTaskUsecase struct {
-		getTaskQuery repository.Query[int, *model.Task]
+		getTask repository.Query[int, *model.Task]
 	}
 
 	GetTaskUsecaseDTO struct {
@@ -23,12 +23,12 @@ type (
 	}
 )
 
-func NewGetTaskUsecase(getTaskQuery repository.Query[int, *model.Task]) *GetTaskUsecase {
-	return &GetTaskUsecase{getTaskQuery: getTaskQuery}
+func NewGetTaskUsecase(getTask repository.Query[int, *model.Task]) *GetTaskUsecase {
+	return &GetTaskUsecase{getTask: getTask}
 }
 
 func (uc *GetTaskUsecase) Exec(ctx context.Context, dto *GetTaskUsecaseDTO) *GetTaskUsecaseResult {
-	task, err := uc.getTaskQuery.Exec(ctx, dto.ID)
+	task, err := uc.getTask.Query(ctx, dto.ID)
 	if err != nil {
 		return &GetTaskUsecaseResult{Err: err}
 	}

@@ -9,8 +9,8 @@ import (
 
 type (
 	GetTasksUsecase struct {
-		getAllTasksQuery      repository.QueryWithoutParam[[]*model.Task]
-		getTasksByStatusQuery repository.Query[model.Status, []*model.Task]
+		getAllTasks      repository.QueryWithoutParam[[]*model.Task]
+		getTasksByStatus repository.Query[model.Status, []*model.Task]
 	}
 
 	GetTasksUsecaseDTO struct {
@@ -24,19 +24,19 @@ type (
 )
 
 func NewGetTasksUsecase(
-	getAllTasksQuery repository.QueryWithoutParam[[]*model.Task],
-	getTasksByStatusQuery repository.Query[model.Status, []*model.Task],
+	getAllTasks repository.QueryWithoutParam[[]*model.Task],
+	getTasksByStatus repository.Query[model.Status, []*model.Task],
 ) *GetTasksUsecase {
 	return &GetTasksUsecase{
-		getAllTasksQuery:      getAllTasksQuery,
-		getTasksByStatusQuery: getTasksByStatusQuery,
+		getAllTasks:      getAllTasks,
+		getTasksByStatus: getTasksByStatus,
 	}
 }
 
 func (uc *GetTasksUsecase) Exec(ctx context.Context, dto *GetTasksUsecaseDTO) *GetTasksUsecaseResult {
 	switch dto.Status {
 	case "":
-		tasks, err := uc.getAllTasksQuery.Exec(ctx)
+		tasks, err := uc.getAllTasks.Query(ctx)
 		if err != nil {
 			return &GetTasksUsecaseResult{Err: err}
 		}
@@ -48,7 +48,7 @@ func (uc *GetTasksUsecase) Exec(ctx context.Context, dto *GetTasksUsecaseDTO) *G
 			return &GetTasksUsecaseResult{Err: err}
 		}
 
-		tasks, err := uc.getTasksByStatusQuery.Exec(ctx, status)
+		tasks, err := uc.getTasksByStatus.Query(ctx, status)
 		if err != nil {
 			return &GetTasksUsecaseResult{Err: err}
 		}

@@ -18,7 +18,7 @@ func NewPutTaskCommand(db *gorm.DB) *putTaskCommand {
 }
 
 // Exec This is equivalent to upsert.
-func (c *putTaskCommand) Exec(ctx context.Context, task *model.Task) error {
+func (c *putTaskCommand) Command(ctx context.Context, task *model.Task) error {
 	rec, err := record.FromTask(task)
 	if err != nil {
 		return err
@@ -37,7 +37,7 @@ func NewDeleteTaskCommand(db *gorm.DB) *deleteTaskCommand {
 	return &deleteTaskCommand{db: db}
 }
 
-func (c *deleteTaskCommand) Exec(ctx context.Context, id int) error {
+func (c *deleteTaskCommand) Command(ctx context.Context, id int) error {
 	if err := c.db.WithContext(ctx).Delete(&record.Task{}, "id = ?", id).Error; err != nil {
 		return err
 	}

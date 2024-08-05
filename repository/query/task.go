@@ -19,7 +19,7 @@ func NewGetTaskByIDQuery(db *gorm.DB) *getTaskByIDQuery {
 	return &getTaskByIDQuery{db: db}
 }
 
-func (q *getTaskByIDQuery) Exec(ctx context.Context, id int) (*model.Task, error) {
+func (q *getTaskByIDQuery) Query(ctx context.Context, id int) (*model.Task, error) {
 	var rec *record.Task
 	if err := q.db.WithContext(ctx).First(&rec, "id = ?", id).Error; err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func NewGetTasksByStatusQuery(db *gorm.DB) *getTasksByStatusQuery {
 	return &getTasksByStatusQuery{db: db}
 }
 
-func (q *getTasksByStatusQuery) Exec(ctx context.Context, status model.Status) ([]*model.Task, error) {
+func (q *getTasksByStatusQuery) Query(ctx context.Context, status model.Status) ([]*model.Task, error) {
 	var recs []*record.Task
 	tx := q.db.WithContext(ctx)
 	if err := tx.Find(&recs, "status = ?", status.String()).Error; err != nil {
@@ -54,7 +54,7 @@ func NewGetAllTasksQuery(db *gorm.DB) *getAllTasksQuery {
 	return &getAllTasksQuery{db: db}
 }
 
-func (q *getAllTasksQuery) Exec(ctx context.Context) ([]*model.Task, error) {
+func (q *getAllTasksQuery) Query(ctx context.Context) ([]*model.Task, error) {
 	var recs []*record.Task
 	if err := q.db.WithContext(ctx).Find(&recs).Error; err != nil {
 		return nil, err

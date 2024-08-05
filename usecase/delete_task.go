@@ -9,8 +9,8 @@ import (
 
 type (
 	DeleteTaskUsecase struct {
-		getTasksQuery     repository.Query[int, *model.Task]
-		deleteTaskCommand repository.Command[int]
+		getTasks   repository.Query[int, *model.Task]
+		deleteTask repository.Command[int]
 	}
 
 	DeleteTaskUsecaseDTO struct {
@@ -23,22 +23,22 @@ type (
 )
 
 func NewDeleteTaskUsecase(
-	getTaskQuery repository.Query[int, *model.Task],
-	deleteTaskCommand repository.Command[int],
+	getTask repository.Query[int, *model.Task],
+	deleteTask repository.Command[int],
 ) *DeleteTaskUsecase {
 	return &DeleteTaskUsecase{
-		getTasksQuery:     getTaskQuery,
-		deleteTaskCommand: deleteTaskCommand,
+		getTasks:   getTask,
+		deleteTask: deleteTask,
 	}
 }
 
 func (uc *DeleteTaskUsecase) Exec(ctx context.Context, dto *DeleteTaskUsecaseDTO) *DeleteTaskUsecaseResult {
-	_, err := uc.getTasksQuery.Exec(ctx, dto.ID)
+	_, err := uc.getTasks.Query(ctx, dto.ID)
 	if err != nil {
 		return &DeleteTaskUsecaseResult{Err: err}
 	}
 
-	if err := uc.deleteTaskCommand.Exec(ctx, dto.ID); err != nil {
+	if err := uc.deleteTask.Command(ctx, dto.ID); err != nil {
 		return &DeleteTaskUsecaseResult{Err: err}
 	}
 

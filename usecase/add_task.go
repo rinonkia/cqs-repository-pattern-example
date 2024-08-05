@@ -9,7 +9,7 @@ import (
 
 type (
 	AddTaskUsecase struct {
-		putTaskCommand repository.Command[*model.Task]
+		putTask repository.Command[*model.Task]
 	}
 
 	AddTaskUsecaseDTO struct {
@@ -22,9 +22,9 @@ type (
 	}
 )
 
-func NewAddTaskUsecase(putTaskCommand repository.Command[*model.Task]) *AddTaskUsecase {
+func NewAddTaskUsecase(putTask repository.Command[*model.Task]) *AddTaskUsecase {
 	return &AddTaskUsecase{
-		putTaskCommand: putTaskCommand,
+		putTask: putTask,
 	}
 }
 
@@ -34,7 +34,7 @@ func (uc *AddTaskUsecase) Exec(ctx context.Context, dto *AddTaskUsecaseDTO) *Add
 		return &AddTaskUsecaseResult{Err: err}
 	}
 
-	err = uc.putTaskCommand.Exec(ctx, &model.Task{
+	err = uc.putTask.Command(ctx, &model.Task{
 		Name:     dto.Name,
 		Priority: p,
 		Status:   model.StatusNotStarted,

@@ -9,8 +9,8 @@ import (
 
 type (
 	UpdateTaskUsecase struct {
-		getTaskQuery   repository.Query[int, *model.Task]
-		putTaskCommand repository.Command[*model.Task]
+		getTask repository.Query[int, *model.Task]
+		putTask repository.Command[*model.Task]
 	}
 
 	UpdateTaskUsecaseDTO struct {
@@ -26,17 +26,17 @@ type (
 )
 
 func NewUpdateTaskUsecase(
-	getTaskQuery repository.Query[int, *model.Task],
-	putTaskCommand repository.Command[*model.Task],
+	getTask repository.Query[int, *model.Task],
+	putTask repository.Command[*model.Task],
 ) *UpdateTaskUsecase {
 	return &UpdateTaskUsecase{
-		getTaskQuery:   getTaskQuery,
-		putTaskCommand: putTaskCommand,
+		getTask: getTask,
+		putTask: putTask,
 	}
 }
 
 func (uc *UpdateTaskUsecase) Exec(ctx context.Context, dto *UpdateTaskUsecaseDTO) *UpdateTaskUsecaseResult {
-	task, err := uc.getTaskQuery.Exec(ctx, dto.ID)
+	task, err := uc.getTask.Query(ctx, dto.ID)
 	if err != nil {
 		return &UpdateTaskUsecaseResult{Err: err}
 	}
@@ -58,7 +58,7 @@ func (uc *UpdateTaskUsecase) Exec(ctx context.Context, dto *UpdateTaskUsecaseDTO
 		Status:   status,
 	}
 
-	err = uc.putTaskCommand.Exec(ctx, &newTask)
+	err = uc.putTask.Command(ctx, &newTask)
 	if err != nil {
 		return &UpdateTaskUsecaseResult{Err: err}
 	}
